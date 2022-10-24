@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using unimanagement_api.Entities.DB;
 
 namespace unimanagement_api.Migrations
 {
     [DbContext(typeof(UniversityMgtDBContext))]
-    partial class UniversityMgtDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221024110144_gpa")]
+    partial class gpa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,8 +154,8 @@ namespace unimanagement_api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("GPA")
-                        .HasColumnType("real");
+                    b.Property<int>("GPA")
+                        .HasColumnType("int");
 
                     b.Property<bool>("HasCalculatedGPA")
                         .HasColumnType("bit");
