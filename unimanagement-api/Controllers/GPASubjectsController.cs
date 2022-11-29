@@ -101,6 +101,8 @@ namespace unimanagement_api.Controllers
             student.HasCalculatedGPA = true;
             _context.Entry(student).State = EntityState.Modified;
 
+            var existingSubjects = _context.GPASubjects.Where(x => x.StudentId == studentId).ToList();
+            _context.GPASubjects.RemoveRange(existingSubjects);
             _context.GPASubjects.AddRange(gpaModel.GPASubjects);
             await _context.SaveChangesAsync();
 

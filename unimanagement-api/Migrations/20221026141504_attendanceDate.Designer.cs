@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using unimanagement_api.Entities.DB;
 
 namespace unimanagement_api.Migrations
 {
     [DbContext(typeof(UniversityMgtDBContext))]
-    partial class UniversityMgtDBContextModelSnapshot : ModelSnapshot
+    [Migration("20221026141504_attendanceDate")]
+    partial class attendanceDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,9 +38,6 @@ namespace unimanagement_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("date")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("time")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
