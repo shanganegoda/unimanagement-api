@@ -11,5 +11,6 @@ namespace unimanagement_api.Entitites
         public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public bool IsLecturer { get; set; }
     }
 }

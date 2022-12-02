@@ -78,10 +78,28 @@ namespace unimanagement_api.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            user.IsLecturer = false;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
+        }
+
+        // POST: api/Users/Login
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("Login")]
+        public async Task<ActionResult<User>> LoginUser(User user)
+        {
+            var userEntity = await _context.Users.Where(u => u.Email == user.Email).FirstOrDefaultAsync();
+            if (userEntity == null)
+            {
+                return NotFound();
+            } else if (userEntity.Password == user.Password)
+            {
+                return userEntity;
+            }
+
+            return NoContent();
         }
 
         // DELETE: api/Users/5
