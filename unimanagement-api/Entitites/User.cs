@@ -12,5 +12,7 @@ namespace unimanagement_api.Entitites
         public string Username { get; set; }
         public string Password { get; set; }
         public bool IsLecturer { get; set; }
+        public int StudentId { get; set; }
+        public int LecturerId { get; set; }
     }
 }

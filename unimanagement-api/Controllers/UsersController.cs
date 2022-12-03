@@ -78,9 +78,22 @@ namespace unimanagement_api.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
+            //Add to Student table
+            Student student = new Student();
+            student.Name = user.Username;
+            student.Title = "";
+            student.DOB = DateTime.Now;
+            student.Description = "";
+            student.GPA = 0;
+            student.HasCalculatedGPA = false;
+            _context.Students.Add(student);
+            _context.SaveChanges();
+
+            //Add to User table
+            user.StudentId = student.Id;
             user.IsLecturer = false;
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }

@@ -10,5 +10,7 @@ namespace unimanagement_api.Models
     {
         public float Score { get; set; }
         public List<GPASubject> GPASubjects { get; set; }
+        public bool HasCalculatedGPA { get; set; }
+        public int StudentId { get; set; }
     }
 }

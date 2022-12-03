@@ -44,6 +44,7 @@ namespace unimanagement_api.Controllers
             GPAViewModel gPAViewModel = new GPAViewModel();
             gPAViewModel.Score = student.GPA;
             gPAViewModel.GPASubjects = gPASubjects;
+            gPAViewModel.HasCalculatedGPA = student.HasCalculatedGPA;
 
             if (gPASubjects.Count() == 0)
             {
@@ -89,7 +90,7 @@ namespace unimanagement_api.Controllers
         [HttpPost]
         public async Task<ActionResult<GPASubject>> PostGPASubject([FromBody]GPAViewModel gpaModel)
         {
-            int studentId = gpaModel.GPASubjects.FirstOrDefault() != null ? gpaModel.GPASubjects.FirstOrDefault().StudentId : 0;
+            int studentId = gpaModel.StudentId;
 
             var student = await _context.Students.FindAsync(studentId);
             if (student == null)
