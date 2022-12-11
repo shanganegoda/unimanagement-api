@@ -41,9 +41,6 @@ namespace unimanagement_api.Controllers
 
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions([FromRoute] int quizId)
         {
-            //public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
-            //return _context.Questions;
-            //return await _context.Questions.ToListAsync();
             return await _context.Questions.Where(q => q.QuizId == quizId).ToListAsync(); 
         }
 
@@ -58,23 +55,22 @@ namespace unimanagement_api.Controllers
             _context.Entry(question).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return Ok(question);
-            //if (id != question.Id)
-            //{
-            //    return BadRequest();
-            //}
+        }
 
+        // DELETE: api/questions/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteQuestion(int id)
+        {
+            var question = await _context.Questions.FindAsync(id);
+            if (question == null)
+            {
+                return NotFound();
+            }
 
+            _context.Questions.Remove(question);
+            await _context.SaveChangesAsync();
 
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-
-            //}
-
-            //return NoContent();
+            return NoContent();
         }
     }
 }
