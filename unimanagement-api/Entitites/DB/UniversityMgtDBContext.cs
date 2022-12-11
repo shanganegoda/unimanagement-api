@@ -21,5 +21,7 @@ namespace unimanagement_api.Entities.DB
         public DbSet<Question> Questions { get; set; }
         public DbSet<Quiz> Quizzes { get; set; }
         public DbSet<GPASubject> GPASubjects { get; set; }
+        public DbSet<StudentQuestion> StudentQuestions { get; set; }
+
     }
 }
