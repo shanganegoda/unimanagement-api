@@ -49,7 +49,14 @@ namespace unimanagement_api.Controllers
 
             return studentQuestions;
         }
+        [HttpGet("quiz/{quizId}")]
+        public List<StudentQuestion> GetStudentQuestionsByQuizId(int quizId)
+            {
+            var studentQuestions = _context.StudentQuestions.Where(s =>s.QuizId == quizId).GroupBy(p=>p.StudentId).Select(g =>
+                new StudentQuestion { StudentId = g.Key }).ToList();
 
+            return studentQuestions;
+        }
         // PUT: api/StudentQuestions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
