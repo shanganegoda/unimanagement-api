@@ -114,12 +114,44 @@ namespace unimanagement_api.Controllers
         // POST: api/StudentQuestions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<StudentQuestion>> PostStudentQuestion(List<StudentQuestion> studentQuestionsList)
+        public async Task<ActionResult<int>> PostStudentQuestion(List<StudentQuestion> studentQuestionsList)
         {
             _context.StudentQuestions.AddRange(studentQuestionsList);
             await _context.SaveChangesAsync();
 
-            return Ok(studentQuestionsList);
+            if(studentQuestionsList.Count() > 0)
+            {
+                var quizId = studentQuestionsList.FirstOrDefault().QuizId;
+                var studentId = studentQuestionsList.FirstOrDefault().StudentId;
+
+                var answerList = _context.Questions.Where(q => q.QuizId == quizId).Join(_context.StudentQuestions, q => q.Id, s => s.QuestionId, (q, s) => new StudentAnswerModel
+                {
+                    Text = q.Text,
+                    CorrectAnswer = q.CorrectAnswer,
+                    Answer1 = q.Answer1,
+                    Answer2 = q.Answer2,
+                    Answer3 = q.Answer3,
+                    StudentAnswerText = s.AnswerText,
+                    IsCorrectAnswer = s.IsCorrectAnswer,
+                    QuestionId = q.Id,
+                    QuizId = q.QuizId,
+                    StudentId = s.StudentId
+                }).Where(a => a.StudentId == studentId && a.QuizId == quizId).ToList();
+
+                var marksForAQuestion = 100 / answerList.Count();
+                var score = 0;
+
+                foreach (var item in answerList)
+                {
+                    if (item.IsCorrectAnswer)
+                        score = score + marksForAQuestion;
+                }
+
+                return Ok(score);
+            } else
+            {
+                return NoContent();
+            }
         }
 
         // DELETE: api/StudentQuestions/5
