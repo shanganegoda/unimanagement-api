@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using unimanagement_api.Entities.DB;
 using unimanagement_api.Entitites;
+using unimanagement_api.Models;
 
 namespace unimanagement_api.Controllers
 {
@@ -49,14 +50,36 @@ namespace unimanagement_api.Controllers
 
             return studentQuestions;
         }
+
         [HttpGet("quiz/{quizId}")]
         public List<StudentQuestion> GetStudentQuestionsByQuizId(int quizId)
-            {
-            var studentQuestions = _context.StudentQuestions.Where(s =>s.QuizId == quizId).GroupBy(p=>p.StudentId).Select(g =>
-                new StudentQuestion { StudentId = g.Key }).ToList();
+        {
+            var studentQuestions = _context.StudentQuestions.Where(s => s.QuizId == quizId).GroupBy(p => p.StudentId).Select(g =>
+                   new StudentQuestion { StudentId = g.Key }).ToList();
 
             return studentQuestions;
         }
+
+        [HttpGet("results/{studentId}/{quizId}")]
+        public List<StudentAnswerModel> GetStudentResults(int studentId, int quizId)
+        {
+            var answerList = _context.Questions.Where(q => q.QuizId == quizId).Join(_context.StudentQuestions, q => q.Id, s => s.QuestionId, (q, s) => new StudentAnswerModel
+            {
+                Text = q.Text,
+                CorrectAnswer = q.CorrectAnswer,
+                Answer1 = q.Answer1,
+                Answer2 = q.Answer2,
+                Answer3 = q.Answer3,
+                StudentAnswerText = s.AnswerText,
+                IsCorrectAnswer = s.IsCorrectAnswer,
+                QuestionId = q.Id,
+                QuizId = q.QuizId,
+                StudentId = s.StudentId
+            }).Where(a => a.StudentId == studentId && a.QuizId == quizId).ToList();
+
+            return answerList;
+        }
+
         // PUT: api/StudentQuestions/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -96,7 +119,7 @@ namespace unimanagement_api.Controllers
             _context.StudentQuestions.AddRange(studentQuestionsList);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStudentQuestion", studentQuestionsList);
+            return Ok(studentQuestionsList);
         }
 
         // DELETE: api/StudentQuestions/5

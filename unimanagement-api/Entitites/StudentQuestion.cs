@@ -6,8 +6,8 @@
         public int StudentId { get; set; }
         public int QuizId { get; set; }
         public int QuestionId { get; set; }
-        public int AnswerId { get; set; }
-        public bool CorrectAnswer { get; set; }
+        public string AnswerText { get; set; }
+        public bool IsCorrectAnswer { get; set; }
         public Question Question { get; set; }
 
     }
